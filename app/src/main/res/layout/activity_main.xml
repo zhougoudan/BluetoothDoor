@@ -21,9 +21,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/activity_main_drawer" />
-    <com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout
-        android:id="@+id/section_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

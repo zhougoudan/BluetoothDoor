@@ -14,8 +14,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.zhiwailife.www.myapplication.Database;
+import com.zhiwailife.www.myapplication.MD5Utils;
 import com.zhiwailife.www.myapplication.Open;
 import com.zhiwailife.www.myapplication.R;
+
+import org.litepal.LitePal;
+
+
+import java.util.List;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class HomeFragment extends Fragment {
     Button btnOpen;
@@ -31,7 +40,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Open.open();
-                Log.d("123456789", "onClick: ");
+                Database database=new Database();
+                database.setDormitory("327");
+                database.setPasssword_MD5(MD5Utils.getMD5Code("123456"));
+                database.save();
+                LitePal.deleteAll(Database.class,"id>1");
+                Log.d("123456", "dormitory name is "+LitePal.find(Database.class, 1).getDormitory());
+                Log.d("123456", "password name is "+LitePal.find(Database.class, 1).getPasssword_MD5());
+
             }
         });
         return root;

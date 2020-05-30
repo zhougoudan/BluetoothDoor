@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zhiwailife.www.myapplication">
-
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <application
+        android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -11,9 +15,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".LIstOfDeviceActivity"></activity>
         <activity android:name=".ManagerActivity" />
-        <activity
-            android:name=".ManageActivity"
-            android:label="@string/title_activity_manage" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

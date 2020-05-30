@@ -27,12 +27,12 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="10"></View>
-        <Button
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
             android:id="@+id/button_open_door"
             android:layout_width="0dp"
             android:layout_weight="37"
             android:layout_height="210dp"
-            android:elevation="33dp"
+            android:elevation="20dp"
             android:text="Button"
             android:layout_gravity="center"/>
             <View

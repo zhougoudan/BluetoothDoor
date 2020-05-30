@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -56,6 +57,10 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.litepal.LitePal;
+import org.litepal.tablemanager.Connector;
+import org.litepal.util.Const;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,15 +74,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView img_user;
     private QMUIPopup mNormalPopup;
     private AppBarConfiguration mAppBarConfiguration;
-    private List<BluetoothLeDevice> deviceList = new ArrayList<>();
+//    private List<BluetoothLeDevice> deviceList = new ArrayList<>();
     BluetoothAdapter mAdapter;
-    public static ArrayList<String> data = new ArrayList<String>();
+//    private ArrayList<String> data = new ArrayList<String>();
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        LitePal.initialize(this);
+        SQLiteDatabase db = LitePal.getDatabase();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -151,23 +159,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.btn_scan:
-                scanAllSubjects();
-                if(ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED
-                        &&ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},1);
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
-                }else {
-                    scanAllSubjects();
-                }
-
                 Intent intent = new Intent(MainActivity.this,LIstOfDeviceActivity.class);
-//                intent.putExtra("adapter", (Serializable) adapter);
                 startActivity(intent);
                 break;
+
 
         }
     }
@@ -225,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void sigleChoiceMenu(String[] items){
         final QMUIDialog.CheckableDialogBuilder builder = new QMUIDialog.CheckableDialogBuilder(MainActivity.this);
-        builder.setTitle("请选择")
+        builder.setTitle("请选择你的蓝牙锁")
                 .setCheckedIndex(1)
                 .addItems(items, new DialogInterface.OnClickListener() {
                     @Override
@@ -257,84 +252,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean checkSupport() {
         return getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
-    }
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    scanAllSubjects();
-                }else {
-                    Toast.makeText(this, "you denied", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
-                break;
-        }
-    }
-    public void scanAllSubjects(){
-        ViseBle.getInstance().startScan(new ScanCallback(new IScanCallback() {
-            @Override
-            public void onDeviceFound(BluetoothLeDevice bluetoothLeDevice) {
-                deviceList.add(bluetoothLeDevice);
-                data.add(bluetoothLeDevice.getAddress());
-            }
-
-            @Override
-            public void onScanFinish(BluetoothLeDeviceStore bluetoothLeDeviceStore) {
-
-            }
-
-            @Override
-            public void onScanTimeout() {
-
-            }
-        }));
-    }
-    public static ArrayList getSingle(ArrayList list){
-        ArrayList newList = new ArrayList();     //创建新集合
-        Iterator it = list.iterator();        //根据传入的集合(旧集合)获取迭代器
-        while(it.hasNext()){          //遍历老集合
-            Object obj = it.next();       //记录每一个元素
-            if(!newList.contains(obj)){      //如果新集合中不包含旧集合中的元素
-                newList.add(obj);       //将元素添加
-            }
-        }
-        return newList;
-    }
-    public void connect(String deviceName){
-        ViseBle.getInstance().connectByName(deviceName, new IConnectCallback() {
-            @Override
-            public void onConnectSuccess(DeviceMirror deviceMirror) {
-
-            }
-
-            @Override
-            public void onConnectFailure(BleException exception) {
-
-            }
-
-            @Override
-            public void onDisconnect(boolean isActive) {
-
-            }
-        });
-    }
-    public void ScanAndConnect(String deviceName){
-        ViseBle.getInstance().connectByName(deviceName, new IConnectCallback() {
-            @Override
-            public void onConnectSuccess(DeviceMirror deviceMirror) {
-
-            }
-
-            @Override
-            public void onConnectFailure(BleException exception) {
-
-            }
-
-            @Override
-            public void onDisconnect(boolean isActive) {
-
-            }
-        });
     }
 }

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
@@ -34,4 +33,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.vise.xiaoyaoyou:baseble:2.0.5'
     implementation 'com.qmuiteam:qmui:2.0.0-alpha08'
+    implementation 'com.google.code.gson:gson:2.7'
+    implementation 'com.squareup.okhttp3:okhttp:3.4.1'
+    implementation 'org.litepal.android:java:3.0.0'
+
+
 }
